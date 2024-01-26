@@ -5,19 +5,10 @@ import HomeScreen from "./screens/HomeScreen";
 import ResultScreen from "./screens/ResultScreen";
 import RecordsScreen from "./screens/RecordsScreen";
 import { useState } from "react";
-import DeviceInfo from "react-native-device-info";
-import * as Device from "expo-device";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [deviceID, setDeviceID] = useState(null);
-
-  DeviceInfo.getUniqueId().then((result) => {
-    setDeviceID(result);
-  });
-  console.log(deviceID);
-
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -5,48 +5,67 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import RecordModel from "../components/RecordModel";
+import { db } from "../firebase";
+import {
+  getDocs,
+  query,
+  where,
+  collection,
+  orderBy,
+  desc,
+  asc,
+} from "firebase/firestore";
 
-export default function RecordsScreen({ navigation }) {
-  const data = [
-    {
-      id: "1",
-      time: "January 25, 2024",
-      bmi: "25.6",
-    },
-    {
-      id: "2",
-      time: "January 25, 2024",
-      bmi: "28.6",
-    },
-    {
-      id: "3",
-      time: "January 25, 2024",
-      bmi: "21.6",
-    },
-    {
-      id: "4",
-      time: "January 25, 2024",
-      bmi: "30.6",
-    },
-    {
-      id: "5",
-      time: "January 25, 2024",
-      bmi: "35.6",
-    },
-    {
-      id: "6",
-      time: "January 25, 2024",
-      bmi: "15.6",
-    },
-    {
-      id: "7",
-      time: "January 25, 2024",
-      bmi: "29.6",
-    },
-  ];
+export default function RecordsScreen({ navigation, route }) {
+  const { deviceID } = route.params;
+  const [fetchedData, setFetchedData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const dataCollection = collection(db, "users");
+      const filteredData = query(dataCollection, orderBy("createdAt", desc));
+
+      const querySnapshot = await getDocs(filteredData);
+      const dataList = [];
+      console.log(querySnapshot);
+      querySnapshot.forEach((doc) => {
+        const docData = doc.data();
+        if (doc.data().deviceUUID == deviceID) {
+          const data = {
+            id: doc.id,
+            deviceID: docData.deviceUUID,
+            bmiCategory: docData.bmiCategory,
+            bmiResult: docData.bmiResult,
+            date: docData.createdAt.toDate().toDateString(),
+            time: docData.createdAt.toDate().toTimeString(),
+          };
+          dataList.push(data);
+        }
+      });
+      setFetchedData(dataList);
+      console.log(dataList);
+    } catch (error) {
+      console.error("Error Fetching Data: ", error);
+    }
+  };
+
+  const renderItem = ({ item }) => (
+    <RecordModel
+      key={item.id}
+      deviceID={item.deviceID}
+      bmiCategory={item.bmiCategory}
+      bmiResult={item.bmiResult}
+      date={item.date}
+      time={item.time}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -62,10 +81,8 @@ export default function RecordsScreen({ navigation }) {
       <Text style={{ fontSize: 30, fontWeight: "bold" }}>Records:</Text>
       <View style={styles.records}>
         <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <RecordModel time={item.time} bmi={item.bmi} />
-          )}
+          data={fetchedData}
+          renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
       </View>

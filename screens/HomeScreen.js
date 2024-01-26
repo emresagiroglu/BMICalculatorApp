@@ -5,8 +5,15 @@ import WeightModel from "../components/WeightModel";
 import HeightModel from "../components/HeightModel";
 import BMIController from "../controller/BMIController";
 import RecordsController from "../controller/RecordsController";
+import DeviceInfo from "react-native-device-info";
 
 export default function HomeScreen({ navigation }) {
+  const [deviceID, setDeviceID] = useState(null);
+
+  DeviceInfo.getUniqueId().then((result) => {
+    setDeviceID(result);
+  });
+
   const [weight, setWeight] = useState(70);
   const [height, setHeight] = useState(160);
   const [gender, setGender] = useState(null);
@@ -48,12 +55,16 @@ export default function HomeScreen({ navigation }) {
         ></HeightModel>
       </View>
       <View style={styles.tabView}>
-        <RecordsController navigation={navigation}></RecordsController>
+        <RecordsController
+          navigation={navigation}
+          deviceID={deviceID}
+        ></RecordsController>
         <BMIController
           navigation={navigation}
           weight={weight}
           height={height}
           gender={gender}
+          deviceID={deviceID}
         ></BMIController>
       </View>
     </View>
@@ -79,7 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   weightView: {
-    height: "30%",
+    marginTop: "5%",
+    height: "28%",
     justifyContent: "center",
     alignItems: "center",
   },

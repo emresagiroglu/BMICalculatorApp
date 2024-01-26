@@ -9,9 +9,13 @@ import {
 } from "firebase/firestore";
 import { useState } from "react";
 
-export default function BMIController({ weight, height, gender, navigation }) {
-  //   const [bmiCategory, setBmiCategory] = useState("");
-  //   const [color, setColor] = useState("");
+export default function BMIController({
+  weight,
+  height,
+  gender,
+  navigation,
+  deviceID,
+}) {
   let bmiCategory = "";
   let color = "";
 
@@ -52,6 +56,7 @@ export default function BMIController({ weight, height, gender, navigation }) {
     try {
       const postsCollectionRef = collection(db, "users");
       const postedDoc = await addDoc(postsCollectionRef, {
+        deviceUUID: deviceID,
         bmiResult: BMIResult,
         bmiCategory: bmiCategory,
         createdAt: serverTimestamp(),

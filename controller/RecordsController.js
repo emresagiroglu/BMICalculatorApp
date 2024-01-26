@@ -2,9 +2,11 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import RecordsButton from "../components/Buttons/RecordsButton";
 
-export default function RecordsController({ navigation }) {
+export default function RecordsController({ navigation, deviceID }) {
   const handleRecords = () => {
-    navigation.navigate("Records");
+    navigation.navigate("Records", {
+      deviceID: deviceID,
+    });
   };
 
   return <RecordsButton handleRecords={handleRecords}></RecordsButton>;
