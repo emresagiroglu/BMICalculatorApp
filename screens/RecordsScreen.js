@@ -35,6 +35,7 @@ export default function RecordsScreen({ navigation, route }) {
       const querySnapshot = await getDocs(filteredData);
       const dataList = [];
       console.log(querySnapshot);
+
       querySnapshot.forEach((doc) => {
         const docData = doc.data();
         if (doc.data().deviceUUID == deviceID) {
