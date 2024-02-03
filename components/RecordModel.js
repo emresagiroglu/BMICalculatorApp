@@ -9,6 +9,7 @@ export default function RecordModel({
   time,
 }) {
   const splittedTime = time.slice(0, 5);
+
   return (
     <View style={styles.container}>
       <View style={styles.timeView}>
@@ -29,11 +30,13 @@ const styles = StyleSheet.create({
     margin: 5,
     justifyContent: "space-around",
     alignItems: "center",
-    padding: "8%",
+    paddingHorizontal: "3%",
+    paddingVertical: "8%",
     borderRadius: 20,
     flexDirection: "row",
   },
   timeView: {
+    flex: 1,
     alignItems: "center",
   },
   date: {
@@ -41,8 +44,9 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   resultView: {
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   bmi: {
     fontSize: 20,

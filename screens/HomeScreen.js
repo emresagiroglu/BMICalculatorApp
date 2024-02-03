@@ -7,16 +7,26 @@ import BMIController from "../controller/BMIController";
 import RecordsController from "../controller/RecordsController";
 import DeviceInfo from "react-native-device-info";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ route, navigation }) {
   const [deviceID, setDeviceID] = useState(null);
-
-  DeviceInfo.getUniqueId().then((result) => {
-    setDeviceID(result);
-  });
-
   const [weight, setWeight] = useState(70);
   const [height, setHeight] = useState(160);
   const [gender, setGender] = useState(null);
+
+  useEffect(() => {
+    DeviceInfo.getUniqueId().then((result) => {
+      setDeviceID(result);
+    });
+
+    // Parametrelerden gelen resetValues kontrol et ve değerleri sıfırla
+    if (route.params?.resetValues) {
+      setWeight(70);
+      setHeight(160);
+      setGender(null);
+
+      navigation.setParams({ resetValues: undefined });
+    }
+  }, [route.params?.resetValues]);
 
   const handleGenderChange = (newGender) => {
     setGender(newGender);

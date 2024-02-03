@@ -1,11 +1,12 @@
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator, // ActivityIndicator ekledik
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import RecordModel from "../components/RecordModel";
 import { db } from "../firebase";
@@ -16,12 +17,12 @@ import {
   collection,
   orderBy,
   desc,
-  asc,
 } from "firebase/firestore";
 
 export default function RecordsScreen({ navigation, route }) {
   const { deviceID } = route.params;
   const [fetchedData, setFetchedData] = useState([]);
+  const [loading, setLoading] = useState(true); // loading durumunu ekledik
 
   useEffect(() => {
     fetchData();
@@ -30,11 +31,10 @@ export default function RecordsScreen({ navigation, route }) {
   const fetchData = async () => {
     try {
       const dataCollection = collection(db, "users");
-      const filteredData = query(dataCollection, orderBy("createdAt", desc));
+      const filteredData = query(dataCollection, orderBy("createdAt", "desc"));
 
       const querySnapshot = await getDocs(filteredData);
       const dataList = [];
-      console.log(querySnapshot);
 
       querySnapshot.forEach((doc) => {
         const docData = doc.data();
@@ -51,9 +51,10 @@ export default function RecordsScreen({ navigation, route }) {
         }
       });
       setFetchedData(dataList);
-      console.log(dataList);
     } catch (error) {
       console.error("Error Fetching Data: ", error);
+    } finally {
+      setLoading(false); // Yüklenme tamamlandığında loading durumunu false yap
     }
   };
 
@@ -81,11 +82,15 @@ export default function RecordsScreen({ navigation, route }) {
       </View>
       <Text style={{ fontSize: 30, fontWeight: "bold" }}>Records:</Text>
       <View style={styles.records}>
-        <FlatList
-          data={fetchedData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
+        {loading ? (
+          <ActivityIndicator size={"large"} color={"#000000"} />
+        ) : (
+          <FlatList
+            data={fetchedData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        )}
       </View>
     </View>
   );
@@ -94,7 +99,6 @@ export default function RecordsScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     alignItems: "center",
   },
   navigation: {

@@ -61,10 +61,7 @@ export default function BMIController({
         bmiCategory: bmiCategory,
         createdAt: serverTimestamp(),
       });
-      console.log("yazıldı");
-    } catch {
-      console.log("hata");
-    }
+    } catch {}
   };
 
   return (

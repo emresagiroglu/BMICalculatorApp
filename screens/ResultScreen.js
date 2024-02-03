@@ -13,7 +13,7 @@ export default function ResultScreen({ route, navigation }) {
       <View style={styles.navigation}>
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack("Home");
+            navigation.navigate("Home", { resetValues: true });
           }}
         >
           <AntDesign name="arrowleft" size={24} color="black" />

@@ -13,17 +13,17 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
           name="Home"
           component={HomeScreen}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
           name="Result"
           component={ResultScreen}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
           name="Records"
           component={RecordsScreen}
         />
