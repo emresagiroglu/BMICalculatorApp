@@ -11,7 +11,7 @@ import WeightModel from "../components/WeightModel";
 import HeightModel from "../components/HeightModel";
 import BMIController from "../controller/BMIController";
 import RecordsController from "../controller/RecordsController";
-// import DeviceInfo from "react-native-device-info";
+import DeviceInfo from "react-native-device-info";
 
 export default function HomeScreen({ route, navigation }) {
   const [deviceID, setDeviceID] = useState(null);
@@ -20,9 +20,9 @@ export default function HomeScreen({ route, navigation }) {
   const [gender, setGender] = useState(null);
 
   useEffect(() => {
-    // DeviceInfo.getUniqueId().then((result) => {
-    //   setDeviceID(result);
-    // });
+    DeviceInfo.getUniqueId().then((result) => {
+      setDeviceID(result);
+    });
 
     // Parametrelerden gelen resetValues kontrol et ve değerleri sıfırla
     if (route.params?.resetValues) {
@@ -76,14 +76,14 @@ export default function HomeScreen({ route, navigation }) {
         <View style={styles.tabView}>
           <RecordsController
             navigation={navigation}
-            // deviceID={deviceID}
+            deviceID={deviceID}
           ></RecordsController>
           <BMIController
             navigation={navigation}
             weight={weight}
             height={height}
             gender={gender}
-            // deviceID={deviceID}
+            deviceID={deviceID}
           ></BMIController>
         </View>
       </View>
