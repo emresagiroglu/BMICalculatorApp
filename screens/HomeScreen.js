@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import GenderController from "../controller/GenderController";
 import WeightModel from "../components/WeightModel";
@@ -39,45 +45,49 @@ export default function HomeScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerView}>
-        <Text style={{ fontSize: 30, fontWeight: "bold" }}>BMI Calculator</Text>
-        <Text>Welcome!</Text>
-      </View>
-      <View style={styles.midView}>
-        <View style={styles.genderView}>
-          <GenderController
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <View style={styles.headerView}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>
+            BMI Calculator
+          </Text>
+          <Text>Welcome!</Text>
+        </View>
+        <View style={styles.midView}>
+          <View style={styles.genderView}>
+            <GenderController
+              gender={gender}
+              onGenderChange={handleGenderChange}
+            ></GenderController>
+          </View>
+        </View>
+        <View style={styles.weightView}>
+          <WeightModel
+            weight={weight}
+            onWeightChange={handleWeightChange}
+          ></WeightModel>
+        </View>
+        <View style={styles.heightView}>
+          <HeightModel
+            height={height}
+            onHeightChange={handleHeightChange}
+          ></HeightModel>
+        </View>
+        <View style={styles.tabView}>
+          <RecordsController
+            navigation={navigation}
+            // deviceID={deviceID}
+          ></RecordsController>
+          <BMIController
+            navigation={navigation}
+            weight={weight}
+            height={height}
             gender={gender}
-            onGenderChange={handleGenderChange}
-          ></GenderController>
+            // deviceID={deviceID}
+          ></BMIController>
         </View>
       </View>
-      <View style={styles.weightView}>
-        <WeightModel
-          weight={weight}
-          onWeightChange={handleWeightChange}
-        ></WeightModel>
-      </View>
-      <View style={styles.heightView}>
-        <HeightModel
-          height={height}
-          onHeightChange={handleHeightChange}
-        ></HeightModel>
-      </View>
-      <View style={styles.tabView}>
-        <RecordsController
-          navigation={navigation}
-          // deviceID={deviceID}
-        ></RecordsController>
-        <BMIController
-          navigation={navigation}
-          weight={weight}
-          height={height}
-          gender={gender}
-          // deviceID={deviceID}
-        ></BMIController>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

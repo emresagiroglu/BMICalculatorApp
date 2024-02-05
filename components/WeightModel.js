@@ -1,39 +1,39 @@
+import React, { useState, useEffect } from "react";
 import {
-  Button,
-  Pressable,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState } from "react";
 
 export default function WeightModel({ weight, onWeightChange }) {
-  const incrementHandler = () => {
-    const newWeight = weight + 1;
-    onWeightChange(newWeight);
-  };
+  const [inputValue, setInputValue] = useState(weight.toString());
 
-  const decrementHandler = () => {
-    const newWeight = weight - 1;
-    onWeightChange(newWeight);
+  // weight prop'u değiştiğinde inputValue'yi güncelle
+  useEffect(() => {
+    setInputValue(weight.toString());
+  }, [weight]);
+
+  const onFocus = () => {
+    // TextInput'a tıklandığında içindeki değeri temizle
+    setInputValue("");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Weight(kg)</Text>
-      <Text style={styles.weight}>{weight}</Text>
-      <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.button} onPress={decrementHandler}>
-          <Text style={{ color: "white", fontSize: 30, fontWeight: "400" }}>
-            -
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={incrementHandler}>
-          <Text style={{ color: "white", fontSize: 30, fontWeight: "400" }}>
-            +
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.headerView}>
+        <Text style={styles.header}>Weight(kg)</Text>
+        <TextInput
+          style={styles.input}
+          value={inputValue}
+          onChangeText={onWeightChange}
+          keyboardType="numeric"
+          maxLength={3}
+          onFocus={onFocus}
+        />
       </View>
     </View>
   );
@@ -52,6 +52,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderWidth: 2,
     marginBottom: 20,
+  },
+  headerView: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   header: {
     fontSize: 20,
@@ -77,5 +81,14 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#3869f5",
     borderRadius: 10,
+  },
+  input: {
+    height: 100,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 50,
+    textAlign: "center",
+    fontWeight: "500",
   },
 });

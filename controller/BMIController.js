@@ -21,7 +21,10 @@ export default function BMIController({
 
   const handleCalculate = async () => {
     if (gender === null) {
-      Alert.alert("Please Select Your Gender", "Please");
+      Alert.alert(
+        "Gender Not Specified",
+        "Oops! It seems you haven't selected your gender yet. Please choose your gender."
+      );
     } else {
       const BMIResult = Number(
         ((weight / (height * height)) * 10000).toFixed(1)
@@ -40,6 +43,7 @@ export default function BMIController({
         bmiCategory = "Obesity";
         color = "red";
       }
+
       // firebase
       writeToFirebase(BMIResult, bmiCategory);
 
